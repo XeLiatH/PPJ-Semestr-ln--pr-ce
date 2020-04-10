@@ -1,5 +1,3 @@
-create schema spring;
-
 create table country
 (
     id int auto_increment,

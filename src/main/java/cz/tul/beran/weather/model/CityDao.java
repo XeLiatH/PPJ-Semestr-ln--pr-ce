@@ -1,9 +1,9 @@
 package cz.tul.beran.weather.model;
 
-import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 
 import java.sql.ResultSet;
+import java.util.HashMap;
 import java.util.List;
 
 public class CityDao {
@@ -33,20 +33,31 @@ public class CityDao {
   }
 
   public boolean createCity(City city) {
-    BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(city);
+    HashMap<String, Object> params = new HashMap<>();
 
-    return jdbc.update("insert into city (name) values (:name)", params) == 1;
+    params.put("name", city.getName());
+    params.put("country_id", city.getCountry().getId());
+
+    return jdbc.update("insert into city (name, country_id) values (:name, :country_id)", params)
+        == 1;
   }
 
   public boolean updateCity(City city) {
-      BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(city);
+    HashMap<String, Object> params = new HashMap<>();
 
-      return jdbc.update("update city set name=:name where id=:id", params) == 1;
+    params.put("id", city.getId());
+    params.put("name", city.getName());
+    params.put("country_id", city.getCountry().getId());
+
+    return jdbc.update("update city set name=:name, country_id=:country_id where id=:id", params)
+        == 1;
   }
 
   public boolean deleteCity(City city) {
-      BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(city);
+    HashMap<String, Object> params = new HashMap<>();
 
-      return jdbc.update("delete from offer where id=:id", params) == 1;
+    params.put("id", city.getId());
+
+    return jdbc.update("delete from offer where id=:id", params) == 1;
   }
 }

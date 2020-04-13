@@ -49,11 +49,16 @@
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.mongodb/mongo-java-driver -->
-        <!-- <dependency>
+        <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongo-java-driver</artifactId>
             <version>3.12.3</version>
-        </dependency> -->
+        </dependency>
+
+        <dependency>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+        </dependency>
 
         <!-- https://mvnrepository.com/artifact/junit/junit -->
         <dependency>

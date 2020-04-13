@@ -1,5 +1,6 @@
 package cz.tul.beran.weather.model;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 
 import java.sql.ResultSet;
@@ -8,11 +9,7 @@ import java.util.List;
 
 public class CityDao {
 
-  private final NamedParameterJdbcOperations jdbc;
-
-  public CityDao(NamedParameterJdbcOperations jdbc) {
-    this.jdbc = jdbc;
-  }
+  @Autowired private NamedParameterJdbcOperations jdbc;
 
   public List<City> getCities() {
     return jdbc.query(

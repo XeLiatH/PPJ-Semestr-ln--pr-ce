@@ -1,4 +1,4 @@
-package cz.tul.beran.weather.entity;
+package cz.tul.beran.weather.entity.mysql;
 
 import javax.persistence.*;
 import java.util.List;
@@ -20,7 +20,6 @@ public class Country {
 
   @OneToMany(mappedBy = "country", cascade = CascadeType.ALL)
   private List<City> cities;
-
 
   public long getId() {
     return id;

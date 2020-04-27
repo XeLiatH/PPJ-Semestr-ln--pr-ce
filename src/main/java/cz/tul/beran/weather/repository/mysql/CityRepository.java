@@ -1,6 +1,6 @@
-package cz.tul.beran.weather.repository;
+package cz.tul.beran.weather.repository.mysql;
 
-import cz.tul.beran.weather.entity.City;
+import cz.tul.beran.weather.entity.mysql.City;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

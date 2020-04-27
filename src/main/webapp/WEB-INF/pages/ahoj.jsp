@@ -11,5 +11,10 @@
         <p>${country.name}</p>
     </c:forEach>
 
+
+    <c:forEach items="${temperatures}" var="temperature">
+        <p>${temperature.cityName}</p>
+    </c:forEach>
+
 </body>
 </html>

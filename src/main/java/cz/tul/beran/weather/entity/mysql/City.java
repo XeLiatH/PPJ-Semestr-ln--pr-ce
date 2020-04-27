@@ -1,4 +1,4 @@
-package cz.tul.beran.weather.entity;
+package cz.tul.beran.weather.entity.mysql;
 
 import javax.persistence.*;
 

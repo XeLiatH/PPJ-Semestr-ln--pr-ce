@@ -1,7 +1,8 @@
 package cz.tul.beran.weather.controller;
 
-import cz.tul.beran.weather.entity.Country;
-import cz.tul.beran.weather.repository.CountryRepository;
+import cz.tul.beran.weather.entity.mysql.Country;
+import cz.tul.beran.weather.repository.mysql.CountryRepository;
+import cz.tul.beran.weather.repository.mongo.TemperatureRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,9 +15,15 @@ public class IndexController {
   @Autowired
   private CountryRepository countryRepository;
 
+  @Autowired
+  private TemperatureRepository temperatureRepository;
+
   @RequestMapping(path = "", method = RequestMethod.GET)
   public String index(Model model) {
+
     model.addAttribute("countries", countryRepository.findAll());
+    model.addAttribute("temperatures", temperatureRepository.findAll());
+
     return "ahoj";
   }
 }

@@ -3,7 +3,6 @@ package cz.tul.beran.weather.controller.rest;
 import cz.tul.beran.weather.entity.mysql.City;
 import cz.tul.beran.weather.exception.CityNotFoundException;
 import cz.tul.beran.weather.repository.mysql.CityRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -12,7 +11,11 @@ import java.util.List;
 @RestController
 public class CityController {
 
-  @Autowired private CityRepository cityRepository;
+  private final CityRepository cityRepository;
+
+  public CityController(CityRepository cityRepository) {
+    this.cityRepository = cityRepository;
+  }
 
   @GetMapping("/cities")
   List<City> all() {
@@ -20,7 +23,7 @@ public class CityController {
   }
 
   @GetMapping("/cities/{id}")
-  City one(@PathVariable Long id) throws Exception {
+  City one(@PathVariable Long id) {
     return cityRepository.findById(id).orElseThrow(() -> new CityNotFoundException(id));
   }
 

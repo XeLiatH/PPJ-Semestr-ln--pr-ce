@@ -5,7 +5,6 @@ import cz.tul.beran.weather.entity.mongo.Temperature;
 import cz.tul.beran.weather.exception.TemperatureNotFoundException;
 import cz.tul.beran.weather.repository.mongo.SequenceRepository;
 import cz.tul.beran.weather.repository.mongo.TemperatureRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -14,9 +13,15 @@ import java.util.List;
 @RestController
 public class TemperatureController {
 
-  @Autowired private TemperatureRepository temperatureRepository;
+  private final TemperatureRepository temperatureRepository;
 
-  @Autowired private SequenceRepository sequenceRepository;
+  private final SequenceRepository sequenceRepository;
+
+  public TemperatureController(
+      TemperatureRepository temperatureRepository, SequenceRepository sequenceRepository) {
+    this.temperatureRepository = temperatureRepository;
+    this.sequenceRepository = sequenceRepository;
+  }
 
   @GetMapping("/temperatures")
   List<Temperature> all() {
@@ -24,7 +29,7 @@ public class TemperatureController {
   }
 
   @GetMapping("/temperatures/{id}")
-  Temperature one(@PathVariable Long id) throws Exception {
+  Temperature one(@PathVariable Long id) {
     return temperatureRepository
         .findById(id)
         .orElseThrow(() -> new TemperatureNotFoundException(id));

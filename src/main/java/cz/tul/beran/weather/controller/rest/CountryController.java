@@ -3,7 +3,6 @@ package cz.tul.beran.weather.controller.rest;
 import cz.tul.beran.weather.entity.mysql.Country;
 import cz.tul.beran.weather.exception.CountryNotFoundException;
 import cz.tul.beran.weather.repository.mysql.CountryRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -12,7 +11,11 @@ import java.util.List;
 @RestController
 public class CountryController {
 
-  @Autowired private CountryRepository countryRepository;
+  private final CountryRepository countryRepository;
+
+  public CountryController(CountryRepository countryRepository) {
+    this.countryRepository = countryRepository;
+  }
 
   @GetMapping("/countries")
   List<Country> all() {
@@ -20,7 +23,7 @@ public class CountryController {
   }
 
   @GetMapping("/countries/{id}")
-  Country one(@PathVariable Long id) throws Exception {
+  Country one(@PathVariable Long id) {
     return countryRepository.findById(id).orElseThrow(() -> new CountryNotFoundException(id));
   }
 

@@ -1,6 +1,9 @@
 package cz.tul.beran.weather.entity.mysql;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Entity
@@ -13,12 +16,15 @@ public class Country {
   private long id;
 
   @Column(name = "code", nullable = false, unique = true)
+  @NotBlank
   private String code;
 
   @Column(name = "name", nullable = false)
+  @NotBlank
   private String name;
 
   @OneToMany(mappedBy = "country", cascade = CascadeType.ALL)
+  @JsonIgnore
   private List<City> cities;
 
   public long getId() {

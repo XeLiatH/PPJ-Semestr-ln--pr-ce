@@ -1,6 +1,7 @@
 package cz.tul.beran.weather.entity.mysql;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "city")
@@ -12,10 +13,12 @@ public class City {
   private long id;
 
   @Column(name = "name", nullable = false, unique = true)
+  @NotBlank
   private String name;
 
   @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "country_id")
+  @NotBlank
   private Country country;
 
   public long getId() {

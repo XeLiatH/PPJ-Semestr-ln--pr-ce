@@ -1,7 +1,7 @@
 package cz.tul.beran.weather.config;
 
-import cz.tul.beran.weather.service.api.OpenWeatherApi;
-import cz.tul.beran.weather.service.api.WeatherProvider;
+import cz.tul.beran.weather.service.OpenWeatherApi;
+import cz.tul.beran.weather.service.WeatherProvider;
 import org.slf4j.Logger;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

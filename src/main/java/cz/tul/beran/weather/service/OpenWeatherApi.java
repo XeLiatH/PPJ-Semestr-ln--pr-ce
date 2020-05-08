@@ -1,4 +1,4 @@
-package cz.tul.beran.weather.service.api;
+package cz.tul.beran.weather.service;
 
 import com.google.gson.Gson;
 import cz.tul.beran.weather.dto.OpenWeatherDTO;

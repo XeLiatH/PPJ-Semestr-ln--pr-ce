@@ -7,4 +7,4 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @Configuration
 @EnableMongoRepositories(basePackages = "cz.tul.beran.weather.repository.mongo")
 @EnableJpaRepositories(basePackages = "cz.tul.beran.weather.repository.mysql")
-public class DatabaseConfig {}
+public class DbConfig {}

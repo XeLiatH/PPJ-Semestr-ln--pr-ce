@@ -9,46 +9,45 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-
 @RestController
 public class CityController {
 
-    @Autowired
-    private CityRepository cityRepository;
+  @Autowired private CityRepository cityRepository;
 
-    @GetMapping("/cities")
-    List<City> all() {
-        return (List<City>) cityRepository.findAll();
-    }
+  @GetMapping("/cities")
+  List<City> all() {
+    return (List<City>) cityRepository.findAll();
+  }
 
-    @GetMapping("/cities/{id}")
-    City one(@PathVariable Long id) throws Exception {
-        return cityRepository.findById(id).orElseThrow(() -> new CityNotFoundException(id));
-    }
+  @GetMapping("/cities/{id}")
+  City one(@PathVariable Long id) throws Exception {
+    return cityRepository.findById(id).orElseThrow(() -> new CityNotFoundException(id));
+  }
 
-    @PostMapping("/cities")
-    City newCity(@Valid @RequestBody City city) {
-        return cityRepository.save(city);
-    }
+  @PostMapping("/cities")
+  City newCity(@Valid @RequestBody City city) {
+    return cityRepository.save(city);
+  }
 
-    @PutMapping("/cities/{id}")
-    City updateCity(@Valid @RequestBody City newCity, @PathVariable Long id) {
-        return cityRepository.findById(id)
-                .map(city -> {
-                    city.setName(newCity.getName());
-                    city.setCountry(newCity.getCountry());
+  @PutMapping("/cities/{id}")
+  City updateCity(@Valid @RequestBody City newCity, @PathVariable Long id) {
+    return cityRepository
+        .findById(id)
+        .map(
+            city -> {
+              city.setName(newCity.getName());
+              city.setCountry(newCity.getCountry());
+              return cityRepository.save(city);
+            })
+        .orElseGet(
+            () -> {
+              newCity.setId(id);
+              return cityRepository.save(newCity);
+            });
+  }
 
-                    return cityRepository.save(city);
-                })
-                .orElseGet(() -> {
-                    newCity.setId(id);
-
-                    return cityRepository.save(newCity);
-                });
-    }
-
-    @DeleteMapping("/cities/{id}")
-    void deleteCity(@PathVariable Long id) {
-        cityRepository.deleteById(id);
-    }
+  @DeleteMapping("/cities/{id}")
+  void deleteCity(@PathVariable Long id) {
+    cityRepository.deleteById(id);
+  }
 }

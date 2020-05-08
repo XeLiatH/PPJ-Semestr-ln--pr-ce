@@ -8,8 +8,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ApiConfig {
 
-    @Bean
-    public WeatherProvider weatherProvider() {
-        return new OpenWeatherApi();
-    }
+  @Bean
+  public WeatherProvider weatherProvider() {
+    return new OpenWeatherApi();
+  }
 }

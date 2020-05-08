@@ -11,56 +11,53 @@ import java.util.Date;
 @Document(collection = "temperature-data")
 public class Temperature {
 
-    @Id
-    private long id;
+  @Id private long id;
 
-    @NotBlank
-    private String countryCode;
-    @NotBlank
-    private String cityName;
-    @NotNull
-    private double temperature;
-    @NotNull
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date createdAt;
+  @NotBlank private String countryCode;
+  @NotBlank private String cityName;
+  @NotNull private double temperature;
 
-    public long getId() {
-        return id;
-    }
+  @NotNull
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+  private Date createdAt;
 
-    public void setId(long id) {
-        this.id = id;
-    }
+  public long getId() {
+    return id;
+  }
 
-    public String getCountryCode() {
-        return countryCode;
-    }
+  public void setId(long id) {
+    this.id = id;
+  }
 
-    public void setCountryCode(String countryCode) {
-        this.countryCode = countryCode;
-    }
+  public String getCountryCode() {
+    return countryCode;
+  }
 
-    public String getCityName() {
-        return cityName;
-    }
+  public void setCountryCode(String countryCode) {
+    this.countryCode = countryCode;
+  }
 
-    public void setCityName(String cityName) {
-        this.cityName = cityName;
-    }
+  public String getCityName() {
+    return cityName;
+  }
 
-    public double getTemperature() {
-        return temperature;
-    }
+  public void setCityName(String cityName) {
+    this.cityName = cityName;
+  }
 
-    public void setTemperature(double temperature) {
-        this.temperature = temperature;
-    }
+  public double getTemperature() {
+    return temperature;
+  }
 
-    public Date getCreatedAt() {
-        return createdAt;
-    }
+  public void setTemperature(double temperature) {
+    this.temperature = temperature;
+  }
 
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
+  public Date getCreatedAt() {
+    return createdAt;
+  }
+
+  public void setCreatedAt(Date createdAt) {
+    this.createdAt = createdAt;
+  }
 }

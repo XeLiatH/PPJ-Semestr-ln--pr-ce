@@ -14,65 +14,70 @@ import java.util.List;
 @RestController
 public class TemperatureController {
 
-    @Autowired
-    private TemperatureRepository temperatureRepository;
+  @Autowired private TemperatureRepository temperatureRepository;
 
-    @Autowired
-    private SequenceRepository sequenceRepository;
+  @Autowired private SequenceRepository sequenceRepository;
 
-    @GetMapping("/temperatures")
-    List<Temperature> all() {
-        return temperatureRepository.findAll();
-    }
+  @GetMapping("/temperatures")
+  List<Temperature> all() {
+    return temperatureRepository.findAll();
+  }
 
-    @GetMapping("/temperatures/{id}")
-    Temperature one(@PathVariable Long id) throws Exception {
-        return temperatureRepository.findById(id).orElseThrow(() -> new TemperatureNotFoundException(id));
-    }
+  @GetMapping("/temperatures/{id}")
+  Temperature one(@PathVariable Long id) throws Exception {
+    return temperatureRepository
+        .findById(id)
+        .orElseThrow(() -> new TemperatureNotFoundException(id));
+  }
 
-    @PostMapping("/temperatures")
-    Temperature newTemperature(@Valid @RequestBody Temperature temperature) {
-        long id = getNextId();
-        temperature.setId(id);
+  @PostMapping("/temperatures")
+  Temperature newTemperature(@Valid @RequestBody Temperature temperature) {
+    long id = getNextId();
+    temperature.setId(id);
 
-        return temperatureRepository.save(temperature);
-    }
+    return temperatureRepository.save(temperature);
+  }
 
-    @PutMapping("/temperatures/{id}")
-    Temperature updateTemperature(@Valid @RequestBody Temperature newTemperature, @PathVariable Long id) {
-        return temperatureRepository.findById(id)
-                .map(temperature -> {
-                    temperature.setCityName(newTemperature.getCityName());
-                    temperature.setCountryCode(newTemperature.getCountryCode());
-                    temperature.setTemperature(newTemperature.getTemperature());
-                    temperature.setCreatedAt(newTemperature.getCreatedAt());
+  @PutMapping("/temperatures/{id}")
+  Temperature updateTemperature(
+      @Valid @RequestBody Temperature newTemperature, @PathVariable Long id) {
+    return temperatureRepository
+        .findById(id)
+        .map(
+            temperature -> {
+              temperature.setCityName(newTemperature.getCityName());
+              temperature.setCountryCode(newTemperature.getCountryCode());
+              temperature.setTemperature(newTemperature.getTemperature());
+              temperature.setCreatedAt(newTemperature.getCreatedAt());
+              return temperatureRepository.save(temperature);
+            })
+        .orElseGet(
+            () -> {
+              newTemperature.setId(id);
+              return temperatureRepository.save(newTemperature);
+            });
+  }
 
-                    return temperatureRepository.save(temperature);
-                })
-                .orElseGet(() -> {
-                   newTemperature.setId(id);
+  @DeleteMapping("/temperatures/{id}")
+  void deleteTemperature(@PathVariable Long id) {
+    temperatureRepository.deleteById(id);
+  }
 
-                   return temperatureRepository.save(newTemperature);
+  private Long getNextId() {
+    Sequence seq =
+        sequenceRepository
+            .findById((long) 1)
+            .orElseGet(
+                () -> {
+                  Sequence s = new Sequence();
+                  s.setId(1);
+                  s.setSeq(0);
+                  return s;
                 });
-    }
 
-    @DeleteMapping("/temperatures/{id}")
-    void deleteTemperature(@PathVariable Long id) {
-        temperatureRepository.deleteById(id);
-    }
+    seq.setSeq(seq.getSeq() + 1);
+    sequenceRepository.save(seq);
 
-    private Long getNextId() {
-        Sequence seq = sequenceRepository.findById((long)1).orElseGet(() -> {
-            Sequence s = new Sequence();
-            s.setId(1);
-            s.setSeq(0);
-
-            return s;
-        });
-
-        seq.setSeq(seq.getSeq() + 1);
-        sequenceRepository.save(seq);
-
-        return seq.getSeq();
-    }
+    return seq.getSeq();
+  }
 }

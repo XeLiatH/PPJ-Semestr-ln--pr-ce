@@ -12,42 +12,42 @@ import java.util.List;
 @RestController
 public class CountryController {
 
-    @Autowired
-    private CountryRepository countryRepository;
+  @Autowired private CountryRepository countryRepository;
 
-    @GetMapping("/countries")
-    List<Country> all() {
-        return (List<Country>) countryRepository.findAll();
-    }
+  @GetMapping("/countries")
+  List<Country> all() {
+    return (List<Country>) countryRepository.findAll();
+  }
 
-    @GetMapping("/countries/{id}")
-    Country one(@PathVariable Long id) throws Exception {
-        return countryRepository.findById(id).orElseThrow(() -> new CountryNotFoundException(id));
-    }
+  @GetMapping("/countries/{id}")
+  Country one(@PathVariable Long id) throws Exception {
+    return countryRepository.findById(id).orElseThrow(() -> new CountryNotFoundException(id));
+  }
 
-    @PostMapping("/countries")
-    Country newCountry(@Valid @RequestBody Country country) {
-        return countryRepository.save(country);
-    }
+  @PostMapping("/countries")
+  Country newCountry(@Valid @RequestBody Country country) {
+    return countryRepository.save(country);
+  }
 
-    @PutMapping("/countries/{id}")
-    Country updateCountry(@Valid @RequestBody Country newCountry, @PathVariable Long id) {
-        return countryRepository.findById(id)
-                .map(country -> {
-                    country.setName(newCountry.getName());
-                    country.setCode(newCountry.getCode());
+  @PutMapping("/countries/{id}")
+  Country updateCountry(@Valid @RequestBody Country newCountry, @PathVariable Long id) {
+    return countryRepository
+        .findById(id)
+        .map(
+            country -> {
+              country.setName(newCountry.getName());
+              country.setCode(newCountry.getCode());
+              return countryRepository.save(country);
+            })
+        .orElseGet(
+            () -> {
+              newCountry.setId(id);
+              return countryRepository.save(newCountry);
+            });
+  }
 
-                    return countryRepository.save(country);
-                })
-                .orElseGet(() -> {
-                    newCountry.setId(id);
-
-                    return countryRepository.save(newCountry);
-                });
-    }
-
-    @DeleteMapping("/countries/{id}")
-    void deleteCountry(@PathVariable Long id) {
-        countryRepository.deleteById(id);
-    }
+  @DeleteMapping("/countries/{id}")
+  void deleteCountry(@PathVariable Long id) {
+    countryRepository.deleteById(id);
+  }
 }

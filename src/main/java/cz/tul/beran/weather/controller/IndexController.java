@@ -10,8 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class IndexController {
 
-  @Autowired
-  private CountryRepository countryRepository;
+  @Autowired private CountryRepository countryRepository;
 
   @RequestMapping(path = "", method = RequestMethod.GET)
   public String index(Model model) {

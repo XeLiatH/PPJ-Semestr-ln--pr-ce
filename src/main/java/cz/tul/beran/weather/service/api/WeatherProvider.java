@@ -4,5 +4,5 @@ import cz.tul.beran.weather.dto.api.WeatherDTO;
 
 public interface WeatherProvider {
 
-    WeatherDTO getWeatherData(String country, String city);
+  WeatherDTO getWeatherData(String country, String city);
 }

@@ -57,6 +57,16 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
+    var countryId;
+
+    function redraw() {
+        $.ajax({
+            url: "/table/" + countryId,
+        }).done(function (data) {
+            $('#redraw').html(data);
+        });
+    }
+
     $('#file').change(function () {
         var fileName = $(this).val().replace('C:\\fakepath\\', " ");
         $(this).next('.custom-file-label').html(fileName);
@@ -64,28 +74,22 @@
 
     $('#choose-country').change(function () {
 
-        var countryId = $(this).val();
-
+        countryId = $(this).val();
         $('#export').attr('data-country-id', countryId);
-
-        $.ajax({
-            url: "/table/" + countryId,
-        }).done(function (data) {
-            $('#redraw').html(data);
-        });
+        redraw();
 
     }).change();
 
     $('#export').click(function (e) {
         e.preventDefault();
-
         window.location = $(this).attr('href') + '/' + $(this).data('country-id');
-
         return false;
     })
 
     $(function () {
-
+        setInterval(function () {
+            redraw();
+        }, 5000);
     });
 </script>
 

@@ -14,7 +14,7 @@ public class SequenceService {
   public Long getNextId() {
     Sequence seq =
         sequenceRepository
-            .findById((long) 1)
+            .findById(1L)
             .orElseGet(
                 () -> {
                   Sequence s = new Sequence();

@@ -37,14 +37,13 @@ public class OpenWeatherApi implements WeatherProvider {
     String query = city + "," + country;
 
     UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromHttpUrl(apiUrl);
-
     uriComponentsBuilder.queryParam("q", query).queryParam("appid", apiKey);
 
     String requestUri = uriComponentsBuilder.toUriString();
+
     logger.info(String.format("Requesting weather data [%s]", requestUri));
 
     RestTemplate restTemplate = new RestTemplate();
-
     String jsonResponse = restTemplate.getForObject(requestUri, String.class);
 
     return new Gson().fromJson(jsonResponse, OpenWeatherDTO.class);

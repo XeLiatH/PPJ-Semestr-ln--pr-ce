@@ -9,5 +9,6 @@ import java.util.List;
 public interface TemperatureRepository extends MongoRepository<Temperature, Long> {
 
   List<Temperature> findByCountryCode(String countryCode);
+
   List<Temperature> findByCreatedAtBefore(Date createdAt);
 }

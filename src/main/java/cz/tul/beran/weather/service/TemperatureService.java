@@ -2,6 +2,7 @@ package cz.tul.beran.weather.service;
 
 import com.mongodb.DBObject;
 import cz.tul.beran.weather.entity.mongo.Temperature;
+import cz.tul.beran.weather.repository.mongo.TemperatureRepository;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.GroupOperation;
@@ -17,8 +18,30 @@ public class TemperatureService {
 
   private final MongoTemplate mongoTemplate;
 
-  public TemperatureService(MongoTemplate mongoTemplate) {
+  private final TemperatureRepository temperatureRepository;
+  private final SequenceService sequenceService;
+
+  public TemperatureService(
+      MongoTemplate mongoTemplate,
+      TemperatureRepository temperatureRepository,
+      SequenceService sequenceService) {
     this.mongoTemplate = mongoTemplate;
+    this.temperatureRepository = temperatureRepository;
+    this.sequenceService = sequenceService;
+  }
+
+  public void createTemperature(String countryCode, String cityName, Double temperature) {
+
+    Long nextId = sequenceService.getNextId();
+
+    Temperature tempObj = new Temperature();
+    tempObj.setId(nextId);
+    tempObj.setCountryCode(countryCode);
+    tempObj.setCityName(cityName);
+    tempObj.setTemperature(temperature);
+    tempObj.setCreatedAt(new Date());
+
+    temperatureRepository.save(tempObj);
   }
 
   public DBObject getAverageTemperatureByCityNameInLastNDays(String cityName, Integer daysAgo) {

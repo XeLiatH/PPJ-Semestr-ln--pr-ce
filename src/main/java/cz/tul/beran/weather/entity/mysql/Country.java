@@ -23,7 +23,7 @@ public class Country {
   @NotBlank
   private String name;
 
-  @OneToMany(mappedBy = "country", cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "country", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   @JsonIgnore
   private List<City> cities;
 

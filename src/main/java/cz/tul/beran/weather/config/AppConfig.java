@@ -23,8 +23,11 @@ public class AppConfig {
   }
 
   @Bean
-  public TemperatureService temperatureService(MongoTemplate mongoTemplate) {
-    return new TemperatureService(mongoTemplate);
+  public TemperatureService temperatureService(
+      MongoTemplate mongoTemplate,
+      TemperatureRepository temperatureRepository,
+      SequenceService sequenceService) {
+    return new TemperatureService(mongoTemplate, temperatureRepository, sequenceService);
   }
 
   @Bean

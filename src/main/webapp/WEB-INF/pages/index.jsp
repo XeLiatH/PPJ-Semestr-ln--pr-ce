@@ -48,29 +48,7 @@
         </div>
 
         <div class="row">
-            <div class="col">
-                <c:forEach items="${countries}" var="country">
-                    <h5>${country.name}</h5>
-                    <hr>
-
-                    <table class="table">
-                        <thead class="thead-dark">
-                        <tr>
-                            <th scope="col">City</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-
-                        <c:forEach items="${country.cities}" var="city">
-                            <tr>
-                                <td>${city.name}</td>
-                            </tr>
-                        </c:forEach>
-
-                        </tbody>
-                    </table>
-
-                </c:forEach>
+            <div class="col" id="redraw">
 
             </div>
         </div>
@@ -86,10 +64,15 @@
 
     $('#choose-country').change(function () {
 
-        $('#export').attr('data-country-id', $(this).val())
+        var countryId = $(this).val();
 
-        // todo: update export data attribute
-        // todo: make an ajax call and redraw the table
+        $('#export').attr('data-country-id', countryId);
+
+        $.ajax({
+            url: "/table/" + countryId,
+        }).done(function (data) {
+            $('#redraw').html(data);
+        });
 
     }).change();
 

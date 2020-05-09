@@ -1,8 +1,10 @@
 package cz.tul.beran.weather.controller.rest;
 
+import com.mongodb.DBObject;
 import cz.tul.beran.weather.entity.mysql.City;
 import cz.tul.beran.weather.exception.CityNotFoundException;
 import cz.tul.beran.weather.repository.mysql.CityRepository;
+import cz.tul.beran.weather.service.TemperatureService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -12,9 +14,11 @@ import java.util.List;
 public class CityController {
 
   private final CityRepository cityRepository;
+  private final TemperatureService temperatureService;
 
-  public CityController(CityRepository cityRepository) {
+  public CityController(CityRepository cityRepository, TemperatureService temperatureService) {
     this.cityRepository = cityRepository;
+    this.temperatureService = temperatureService;
   }
 
   @GetMapping("/cities")
@@ -25,6 +29,12 @@ public class CityController {
   @GetMapping("/cities/{id}")
   City one(@PathVariable Long id) {
     return cityRepository.findById(id).orElseThrow(() -> new CityNotFoundException(id));
+  }
+
+  @GetMapping("/cities/{id}/avg/{daysAgo}")
+  DBObject average(@PathVariable Long id, @PathVariable Integer daysAgo) {
+    City city = cityRepository.findById(id).orElseThrow(() -> new CityNotFoundException(id));
+    return temperatureService.getAverageTemperatureByCityNameInLastNDays(city.getName(), daysAgo);
   }
 
   @PostMapping("/cities")

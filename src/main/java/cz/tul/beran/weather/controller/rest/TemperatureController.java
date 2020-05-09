@@ -14,7 +14,6 @@ import java.util.List;
 public class TemperatureController {
 
   private final TemperatureRepository temperatureRepository;
-
   private final SequenceRepository sequenceRepository;
 
   public TemperatureController(

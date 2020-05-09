@@ -1,4 +1,4 @@
-package cz.tul.beran.weather.dto.rest;
+package cz.tul.beran.weather.dto.mysql;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -6,7 +6,6 @@ import javax.validation.constraints.NotNull;
 public class CityDTO {
 
   @NotBlank private String name;
-
   @NotNull private Long countryId;
 
   public String getName() {

@@ -1,6 +1,7 @@
 package cz.tul.beran.weather.controller;
 
-import cz.tul.beran.weather.service.CsvWeather;
+import cz.tul.beran.weather.service.exporter.TemperatureExporter;
+import cz.tul.beran.weather.service.importer.TemperatureImporter;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -17,25 +18,29 @@ import org.springframework.web.servlet.view.RedirectView;
 @Controller
 public class CsvController {
 
-  private final CsvWeather csvWeather;
+  private final TemperatureImporter temperatureImporter;
+  private final TemperatureExporter temperatureExporter;
 
-  public CsvController(CsvWeather csvWeather) {
-    this.csvWeather = csvWeather;
+  public CsvController(
+      TemperatureImporter temperatureImporter, TemperatureExporter temperatureExporter) {
+    this.temperatureImporter = temperatureImporter;
+    this.temperatureExporter = temperatureExporter;
   }
 
   @PostMapping(value = "/import", consumes = "multipart/form-data")
   public RedirectView importData(@RequestParam("file") MultipartFile file) {
-    csvWeather.importData(file);
+    temperatureImporter.importTemperatures(file);
     return new RedirectView("/");
   }
 
   @GetMapping(value = "/export/{id}")
   public ResponseEntity<Resource> exportData(@PathVariable Long id) {
 
-    String exportedData = csvWeather.exportData(id);
+    String exportedData = temperatureExporter.exportTemperatures(id);
     String fileName = "export.csv";
 
     HttpHeaders headers = new HttpHeaders();
+
     headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName);
     headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
     headers.add("Pragma", "no-cache");

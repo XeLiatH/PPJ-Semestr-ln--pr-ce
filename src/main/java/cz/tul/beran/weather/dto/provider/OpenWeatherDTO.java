@@ -1,4 +1,4 @@
-package cz.tul.beran.weather.dto;
+package cz.tul.beran.weather.dto.provider;
 
 public class OpenWeatherDTO implements WeatherDTO {
 

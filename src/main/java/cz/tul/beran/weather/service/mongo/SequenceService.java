@@ -1,8 +1,10 @@
-package cz.tul.beran.weather.service;
+package cz.tul.beran.weather.service.mongo;
 
 import cz.tul.beran.weather.entity.mongo.Sequence;
 import cz.tul.beran.weather.repository.mongo.SequenceRepository;
+import org.springframework.stereotype.Component;
 
+@Component
 public class SequenceService {
 
   private final SequenceRepository sequenceRepository;

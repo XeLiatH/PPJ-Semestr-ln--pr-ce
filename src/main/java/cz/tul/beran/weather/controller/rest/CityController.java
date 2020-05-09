@@ -1,14 +1,8 @@
 package cz.tul.beran.weather.controller.rest;
 
-import com.mongodb.DBObject;
-import cz.tul.beran.weather.dto.rest.CityDTO;
+import cz.tul.beran.weather.dto.mysql.CityDTO;
 import cz.tul.beran.weather.entity.mysql.City;
-import cz.tul.beran.weather.entity.mysql.Country;
-import cz.tul.beran.weather.exception.CityNotFoundException;
-import cz.tul.beran.weather.exception.CountryNotFoundException;
-import cz.tul.beran.weather.repository.mysql.CityRepository;
-import cz.tul.beran.weather.repository.mysql.CountryRepository;
-import cz.tul.beran.weather.service.TemperatureService;
+import cz.tul.beran.weather.service.mysql.CityService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -17,78 +11,34 @@ import java.util.List;
 @RestController
 public class CityController {
 
-  private final CityRepository cityRepository;
-  private final CountryRepository countryRepository;
-  private final TemperatureService temperatureService;
+  private final CityService cityService;
 
-  public CityController(
-      CityRepository cityRepository,
-      CountryRepository countryRepository,
-      TemperatureService temperatureService) {
-    this.cityRepository = cityRepository;
-    this.countryRepository = countryRepository;
-    this.temperatureService = temperatureService;
+  public CityController(CityService cityService) {
+    this.cityService = cityService;
   }
 
   @GetMapping("/cities")
   List<City> all() {
-    return (List<City>) cityRepository.findAll();
+    return cityService.findAll();
   }
 
   @GetMapping("/cities/{id}")
   City one(@PathVariable Long id) {
-    return cityRepository.findById(id).orElseThrow(() -> new CityNotFoundException(id));
-  }
-
-  @GetMapping("/cities/{id}/avg/{daysAgo}")
-  DBObject average(@PathVariable Long id, @PathVariable Integer daysAgo) {
-    City city = cityRepository.findById(id).orElseThrow(() -> new CityNotFoundException(id));
-    return temperatureService.getAverageTemperatureByCityNameInLastNDays(city.getName(), daysAgo);
+    return cityService.findById(id);
   }
 
   @PostMapping(value = "/cities", consumes = "application/json")
   City newCity(@Valid @RequestBody CityDTO cityDTO) {
-
-    Country country = countryRepository.findById(cityDTO.getCountryId()).orElse(null);
-    if (null == country) {
-      throw new CountryNotFoundException(cityDTO.getCountryId());
-    }
-
-    City city = new City();
-    city.setCountry(country);
-    city.setName(cityDTO.getName());
-
-    return cityRepository.save(city);
+    return cityService.create(cityDTO);
   }
 
   @PutMapping("/cities/{id}")
-  City updateCity(@Valid @RequestBody CityDTO cityDTO, @PathVariable Long id) {
-    Country country = countryRepository.findById(cityDTO.getCountryId()).orElse(null);
-    if (null == country) {
-      throw new CountryNotFoundException(cityDTO.getCountryId());
-    }
-
-    return cityRepository
-        .findById(id)
-        .map(
-            city -> {
-              city.setName(cityDTO.getName());
-              city.setCountry(country);
-              return cityRepository.save(city);
-            })
-        .orElseGet(
-            () -> {
-              City city = new City();
-              city.setId(id);
-              city.setCountry(country);
-              city.setName(cityDTO.getName());
-
-              return cityRepository.save(city);
-            });
+  City updateCity(@PathVariable Long id, @Valid @RequestBody CityDTO cityDTO) {
+    return cityService.update(id, cityDTO);
   }
 
   @DeleteMapping("/cities/{id}")
   void deleteCity(@PathVariable Long id) {
-    cityRepository.deleteById(id);
+    cityService.deleteById(id);
   }
 }

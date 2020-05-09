@@ -1,17 +1,18 @@
-package cz.tul.beran.weather.dto;
+package cz.tul.beran.weather.dto.importer;
+
+import cz.tul.beran.weather.entity.mongo.Temperature;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class CsvWeatherRow {
 
   private String countryCode;
   private String cityName;
-  private double temperature;
+  private Double temperature;
   private Date createdAt;
 
-  public CsvWeatherRow(String countryCode, String cityName, double temperature, Date createdAt) {
+  public CsvWeatherRow(String countryCode, String cityName, Double temperature, Date createdAt) {
     this.countryCode = countryCode;
     this.cityName = cityName;
     this.temperature = temperature;
@@ -22,7 +23,7 @@ public class CsvWeatherRow {
     this.countryCode = parts[0];
     this.cityName = parts[1];
     this.temperature = Double.parseDouble(parts[2]);
-    this.createdAt = (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).parse(parts[3]);
+    this.createdAt = Temperature.dateFormat.parse(parts[3]);
   }
 
   public String getCountryCode() {
@@ -41,11 +42,11 @@ public class CsvWeatherRow {
     this.cityName = cityName;
   }
 
-  public double getTemperature() {
+  public Double getTemperature() {
     return temperature;
   }
 
-  public void setTemperature(double temperature) {
+  public void setTemperature(Double temperature) {
     this.temperature = temperature;
   }
 

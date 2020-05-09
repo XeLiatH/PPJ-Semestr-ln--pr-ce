@@ -1,22 +1,22 @@
-package cz.tul.beran.weather.service;
+package cz.tul.beran.weather.service.provider;
 
 import com.google.gson.Gson;
-import cz.tul.beran.weather.dto.OpenWeatherDTO;
+import cz.tul.beran.weather.dto.provider.OpenWeatherDTO;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
+@Component
 public class OpenWeatherApi implements WeatherProvider {
 
   private final Logger logger;
-
   @Value("${cz.tul.beran.weather.apiKey}")
   private String apiKey;
-
   @Value("${cz.tul.beran.weather.apiUrl}")
   private String apiUrl;
 
@@ -31,7 +31,7 @@ public class OpenWeatherApi implements WeatherProvider {
       country = URLEncoder.encode(country, "utf-8");
       city = URLEncoder.encode(city, "utf-8");
     } catch (UnsupportedEncodingException e) {
-      e.printStackTrace();
+      logger.warn(e.getMessage(), e);
     }
 
     String query = city + "," + country;

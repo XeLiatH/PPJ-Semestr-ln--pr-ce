@@ -1,10 +1,9 @@
 package cz.tul.beran.weather.controller.rest;
 
-import cz.tul.beran.weather.entity.mongo.Sequence;
 import cz.tul.beran.weather.entity.mongo.Temperature;
 import cz.tul.beran.weather.exception.TemperatureNotFoundException;
-import cz.tul.beran.weather.repository.mongo.SequenceRepository;
 import cz.tul.beran.weather.repository.mongo.TemperatureRepository;
+import cz.tul.beran.weather.service.SequenceService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -14,12 +13,12 @@ import java.util.List;
 public class TemperatureController {
 
   private final TemperatureRepository temperatureRepository;
-  private final SequenceRepository sequenceRepository;
+  private final SequenceService sequenceService;
 
   public TemperatureController(
-      TemperatureRepository temperatureRepository, SequenceRepository sequenceRepository) {
+      TemperatureRepository temperatureRepository, SequenceService sequenceService) {
     this.temperatureRepository = temperatureRepository;
-    this.sequenceRepository = sequenceRepository;
+    this.sequenceService = sequenceService;
   }
 
   @GetMapping("/temperatures")
@@ -36,7 +35,7 @@ public class TemperatureController {
 
   @PostMapping("/temperatures")
   Temperature newTemperature(@Valid @RequestBody Temperature temperature) {
-    long id = getNextId();
+    long id = sequenceService.getNextId();
     temperature.setId(id);
 
     return temperatureRepository.save(temperature);
@@ -65,23 +64,5 @@ public class TemperatureController {
   @DeleteMapping("/temperatures/{id}")
   void deleteTemperature(@PathVariable Long id) {
     temperatureRepository.deleteById(id);
-  }
-
-  private Long getNextId() {
-    Sequence seq =
-        sequenceRepository
-            .findById((long) 1)
-            .orElseGet(
-                () -> {
-                  Sequence s = new Sequence();
-                  s.setId(1);
-                  s.setSeq(0);
-                  return s;
-                });
-
-    seq.setSeq(seq.getSeq() + 1);
-    sequenceRepository.save(seq);
-
-    return seq.getSeq();
   }
 }

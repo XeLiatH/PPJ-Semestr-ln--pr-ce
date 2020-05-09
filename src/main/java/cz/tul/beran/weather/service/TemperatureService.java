@@ -21,8 +21,7 @@ public class TemperatureService {
     this.mongoTemplate = mongoTemplate;
   }
 
-  public DBObject getAverageTemperatureByCityNameInLastNDays(
-      String cityName, Integer daysAgo) {
+  public DBObject getAverageTemperatureByCityNameInLastNDays(String cityName, Integer daysAgo) {
 
     Calendar calendar = new GregorianCalendar();
     calendar.add(Calendar.DAY_OF_YEAR, daysAgo * (-1));

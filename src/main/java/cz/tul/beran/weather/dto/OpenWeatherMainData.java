@@ -11,8 +11,4 @@ public class OpenWeatherMainData {
   public double getTemp() {
     return temp;
   }
-
-  public double getTempCelsius() {
-    return temp - 273.15;
-  }
 }

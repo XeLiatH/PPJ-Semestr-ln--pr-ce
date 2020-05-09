@@ -12,18 +12,19 @@ import java.net.URLEncoder;
 
 public class OpenWeatherApi implements WeatherProvider {
 
+  private final Logger logger;
+
   @Value("${cz.tul.beran.weather.apiKey}")
   private String apiKey;
 
   @Value("${cz.tul.beran.weather.apiUrl}")
   private String apiUrl;
 
-  private final Logger logger;
-
   public OpenWeatherApi(Logger logger) {
     this.logger = logger;
   }
 
+  @Override
   public OpenWeatherDTO getWeatherData(String country, String city) {
 
     try {

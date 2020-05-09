@@ -1,6 +1,7 @@
 package cz.tul.beran.weather.entity.mongo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import cz.tul.beran.weather.dto.CsvWeatherRow;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -20,6 +21,18 @@ public class Temperature {
   @NotNull
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   private Date createdAt;
+
+  public static Temperature createFromCsvRow(Long id, CsvWeatherRow row) {
+    Temperature temperature = new Temperature();
+
+    temperature.setId(id);
+    temperature.setCountryCode(row.getCountryCode());
+    temperature.setCityName(row.getCityName());
+    temperature.setTemperature(row.getTemperature());
+    temperature.setCreatedAt(row.getCreatedAt());
+
+    return temperature;
+  }
 
   public long getId() {
     return id;

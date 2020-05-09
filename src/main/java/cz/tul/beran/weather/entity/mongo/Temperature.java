@@ -3,6 +3,7 @@ package cz.tul.beran.weather.entity.mongo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import cz.tul.beran.weather.dto.importer.CsvWeatherRow;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotBlank;
@@ -23,6 +24,7 @@ public class Temperature {
 
   @NotNull
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+  @Indexed(expireAfterSeconds = 1209600)
   private Date createdAt;
 
   public static Temperature createFromCsvRow(CsvWeatherRow row) {

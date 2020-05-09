@@ -62,19 +62,28 @@ public class CityController {
   }
 
   @PutMapping("/cities/{id}")
-  City updateCity(@Valid @RequestBody City newCity, @PathVariable Long id) {
+  City updateCity(@Valid @RequestBody CityDTO cityDTO, @PathVariable Long id) {
+    Country country = countryRepository.findById(cityDTO.getCountryId()).orElse(null);
+    if (null == country) {
+      throw new CountryNotFoundException(cityDTO.getCountryId());
+    }
+
     return cityRepository
         .findById(id)
         .map(
             city -> {
-              city.setName(newCity.getName());
-              city.setCountry(newCity.getCountry());
+              city.setName(cityDTO.getName());
+              city.setCountry(country);
               return cityRepository.save(city);
             })
         .orElseGet(
             () -> {
-              newCity.setId(id);
-              return cityRepository.save(newCity);
+              City city = new City();
+              city.setId(id);
+              city.setCountry(country);
+              city.setName(cityDTO.getName());
+
+              return cityRepository.save(city);
             });
   }
 

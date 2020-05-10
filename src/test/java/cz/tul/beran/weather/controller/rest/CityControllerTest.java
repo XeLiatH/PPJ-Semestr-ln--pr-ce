@@ -7,9 +7,9 @@ import cz.tul.beran.weather.service.mysql.CountryService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.Order;
 import org.mockito.Mock;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -23,7 +23,23 @@ public class CityControllerTest extends AbstractTest {
   }
 
   @Test
-  @Order(1)
+  @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:test_data.sql")
+  public void getCities_ok() throws Exception {
+    String url = "/cities";
+
+    MvcResult mvcResult =
+        mvc.perform(MockMvcRequestBuilders.get(url).accept(MediaType.APPLICATION_JSON)).andReturn();
+
+    int status = mvcResult.getResponse().getStatus();
+    Assert.assertEquals(200, status);
+
+    String content = mvcResult.getResponse().getContentAsString();
+    City[] cities = super.mapFromJson(content, City[].class);
+
+    Assert.assertTrue(cities.length > 0);
+  }
+
+  @Test
   public void createCity_ok() throws Exception {
     CountryDTO countryDTO = new CountryDTO();
     countryDTO.setName("Czech Republic");
@@ -47,22 +63,5 @@ public class CityControllerTest extends AbstractTest {
 
     int status = mvcResult.getResponse().getStatus();
     Assert.assertEquals(200, status);
-  }
-
-  @Test
-  @Order(2)
-  public void getCities_ok() throws Exception {
-    String url = "/cities";
-
-    MvcResult mvcResult =
-        mvc.perform(MockMvcRequestBuilders.get(url).accept(MediaType.APPLICATION_JSON)).andReturn();
-
-    int status = mvcResult.getResponse().getStatus();
-    Assert.assertEquals(200, status);
-
-    String content = mvcResult.getResponse().getContentAsString();
-    City[] cities = super.mapFromJson(content, City[].class);
-
-    Assert.assertTrue(cities.length > 0);
   }
 }

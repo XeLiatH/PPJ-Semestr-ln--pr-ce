@@ -10,12 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 public class CountryControllerTest extends AbstractTest {
-
-  @PersistenceContext EntityManager entityManager;
 
   @Before
   public void setUp() {
@@ -23,7 +18,6 @@ public class CountryControllerTest extends AbstractTest {
   }
 
   @Test
-  @Order(1)
   public void createCountry_ok() throws Exception {
     String url = "/countries";
 
@@ -45,7 +39,6 @@ public class CountryControllerTest extends AbstractTest {
   }
 
   @Test
-  @Order(2)
   public void getCountries_ok() throws Exception {
     String url = "/countries";
 

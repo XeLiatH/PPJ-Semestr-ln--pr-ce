@@ -5,6 +5,8 @@ import cz.tul.beran.weather.entity.mongo.Temperature;
 import cz.tul.beran.weather.repository.mysql.CityRepository;
 import cz.tul.beran.weather.repository.mysql.CountryRepository;
 import cz.tul.beran.weather.service.mongo.TemperatureService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,6 +17,8 @@ import java.util.List;
 
 @Component
 public class CsvTemperatureImporter implements TemperatureImporter {
+
+  private static final Logger logger = LoggerFactory.getLogger(CsvTemperatureImporter.class);
 
   private final CountryRepository countryRepository;
   private final CityRepository cityRepository;
@@ -39,16 +43,21 @@ public class CsvTemperatureImporter implements TemperatureImporter {
       String contents = new String(multipartFile.getBytes());
       List<CsvWeatherRow> rows = parseCsv(contents);
 
+      int i = 0;
       for (CsvWeatherRow row : rows) {
         if (null == countryRepository.findByCodeEquals(row.getCountryCode())) {
+          logger.debug(
+              String.format("Country not found [%s], skipping row %d", row.getCountryCode(), i));
           continue;
         }
 
         if (null == cityRepository.findByNameEquals(row.getCityName())) {
+          logger.debug(String.format("City not found [%s], skipping row %d", row.getCityName(), i));
           continue;
         }
 
         temperatureService.create(Temperature.createFromCsvRow(row));
+        i++;
       }
 
     } catch (IOException | ParseException e) {

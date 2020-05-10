@@ -3,6 +3,7 @@ package cz.tul.beran.weather.service.provider;
 import com.google.gson.Gson;
 import cz.tul.beran.weather.dto.provider.OpenWeatherDTO;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -14,15 +15,13 @@ import java.net.URLEncoder;
 @Component
 public class OpenWeatherApi implements WeatherProvider {
 
-  private final Logger logger;
+  private static final Logger logger = LoggerFactory.getLogger(OpenWeatherApi.class);
+
   @Value("${cz.tul.beran.weather.apiKey}")
   private String apiKey;
+
   @Value("${cz.tul.beran.weather.apiUrl}")
   private String apiUrl;
-
-  public OpenWeatherApi(Logger logger) {
-    this.logger = logger;
-  }
 
   @Override
   public OpenWeatherDTO getWeatherData(String country, String city) {
@@ -45,6 +44,8 @@ public class OpenWeatherApi implements WeatherProvider {
 
     RestTemplate restTemplate = new RestTemplate();
     String jsonResponse = restTemplate.getForObject(requestUri, String.class);
+
+    logger.info(String.format("Data retrieved successfully [%s]", jsonResponse));
 
     return new Gson().fromJson(jsonResponse, OpenWeatherDTO.class);
   }

@@ -33,7 +33,7 @@ public class CsvController {
     return new RedirectView("/");
   }
 
-  @GetMapping(value = "/export/{id}")
+  @GetMapping("/export/{id}")
   public ResponseEntity<Resource> exportData(@PathVariable Long id) {
 
     String exportedData = temperatureExporter.exportTemperatures(id);

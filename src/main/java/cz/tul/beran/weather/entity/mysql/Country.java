@@ -13,7 +13,7 @@ public class Country {
   @Id
   @Column(name = "country_id")
   @GeneratedValue(strategy = GenerationType.AUTO)
-  private long id;
+  private Long id;
 
   @Column(name = "code", nullable = false, unique = true)
   @NotBlank
@@ -27,11 +27,11 @@ public class Country {
   @JsonIgnore
   private List<City> cities;
 
-  public long getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(Long id) {
     this.id = id;
   }
 

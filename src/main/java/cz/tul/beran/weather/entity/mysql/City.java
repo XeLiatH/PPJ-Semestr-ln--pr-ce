@@ -11,7 +11,7 @@ public class City {
   @Id
   @Column(name = "city_id")
   @GeneratedValue(strategy = GenerationType.AUTO)
-  private long id;
+  private Long id;
 
   @Column(name = "name", nullable = false, unique = true)
   @NotBlank
@@ -22,11 +22,11 @@ public class City {
   @NotNull
   private Country country;
 
-  public long getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(Long id) {
     this.id = id;
   }
 

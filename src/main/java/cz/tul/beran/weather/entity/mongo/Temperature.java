@@ -16,11 +16,11 @@ public class Temperature {
 
   public static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-  @Id private long id;
+  @Id private Long id;
 
   @NotBlank private String countryCode;
   @NotBlank private String cityName;
-  @NotNull private double temperature;
+  @NotNull private Double temperature;
 
   @NotNull
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -38,11 +38,11 @@ public class Temperature {
     return temperature;
   }
 
-  public long getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(Long id) {
     this.id = id;
   }
 
@@ -62,11 +62,11 @@ public class Temperature {
     this.cityName = cityName;
   }
 
-  public double getTemperature() {
+  public Double getTemperature() {
     return temperature;
   }
 
-  public void setTemperature(double temperature) {
+  public void setTemperature(Double temperature) {
     this.temperature = temperature;
   }
 

@@ -20,8 +20,8 @@ public class SequenceService {
             .orElseGet(
                 () -> {
                   Sequence s = new Sequence();
-                  s.setId(1);
-                  s.setSeq(0);
+                  s.setId(1L);
+                  s.setSeq(0L);
                   return s;
                 });
 

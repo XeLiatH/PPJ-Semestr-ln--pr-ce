@@ -20,7 +20,7 @@ public class CityControllerTest extends AbstractTest {
   @Test
   @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:populate.sql")
   @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "classpath:truncate.sql")
-  public void getCities_ok() throws Exception {
+  public void getCitiesOk() throws Exception {
     String url = "/cities";
 
     MvcResult mvcResult =
@@ -38,7 +38,7 @@ public class CityControllerTest extends AbstractTest {
   @Test
   @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:populate.sql")
   @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "classpath:truncate.sql")
-  public void getCity_ok() throws Exception {
+  public void getCityOk() throws Exception {
     String url = "/cities/1";
 
     MvcResult mvcResult =
@@ -56,7 +56,7 @@ public class CityControllerTest extends AbstractTest {
   @Test
   @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:countries.sql")
   @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "classpath:truncate.sql")
-  public void createCity_ok() throws Exception {
+  public void createCityOk() throws Exception {
     String url = "/cities";
 
     CityDTO dto = new CityDTO();
@@ -79,7 +79,7 @@ public class CityControllerTest extends AbstractTest {
   @Test
   @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:countries.sql")
   @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "classpath:truncate.sql")
-  public void createCity_bad() throws Exception {
+  public void createCityBad() throws Exception {
     String url = "/cities";
 
     CityDTO dto = new CityDTO();
@@ -101,7 +101,7 @@ public class CityControllerTest extends AbstractTest {
   @Test
   @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:populate.sql")
   @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "classpath:truncate.sql")
-  public void updateCity_ok() throws Exception {
+  public void updateCityOk() throws Exception {
     String url = "/cities/1";
 
     CityDTO dto = new CityDTO();
@@ -124,7 +124,7 @@ public class CityControllerTest extends AbstractTest {
   @Test
   @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:populate.sql")
   @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "classpath:truncate.sql")
-  public void updateCity_bad() throws Exception {
+  public void updateCityBad() throws Exception {
     String url = "/cities/1";
 
     CityDTO dto = new CityDTO();
@@ -146,7 +146,7 @@ public class CityControllerTest extends AbstractTest {
   @Test
   @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:populate.sql")
   @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "classpath:truncate.sql")
-  public void deleteCity_ok() throws Exception {
+  public void deleteCityOk() throws Exception {
     String url = "/cities/1";
 
     MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.delete(url)).andReturn();

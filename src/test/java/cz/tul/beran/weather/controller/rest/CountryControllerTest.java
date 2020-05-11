@@ -20,7 +20,7 @@ public class CountryControllerTest extends AbstractTest {
   @Test
   @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:countries.sql")
   @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "classpath:truncate.sql")
-  public void getCountries_ok() throws Exception {
+  public void getCountriesOk() throws Exception {
     String url = "/countries";
 
     MvcResult mvcResult =
@@ -38,7 +38,7 @@ public class CountryControllerTest extends AbstractTest {
   @Test
   @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:countries.sql")
   @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "classpath:truncate.sql")
-  public void getCountry_ok() throws Exception {
+  public void getCountryOk() throws Exception {
     String url = "/countries/1";
 
     MvcResult mvcResult =
@@ -55,7 +55,7 @@ public class CountryControllerTest extends AbstractTest {
 
   @Test
   @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "classpath:truncate.sql")
-  public void createCountry_ok() throws Exception {
+  public void createCountrOk() throws Exception {
     String url = "/countries";
 
     CountryDTO dto = new CountryDTO();
@@ -77,7 +77,7 @@ public class CountryControllerTest extends AbstractTest {
 
   @Test
   @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "classpath:truncate.sql")
-  public void createCountry_bad() throws Exception {
+  public void createCountryBad() throws Exception {
     String url = "/countries";
 
     CountryDTO dto = new CountryDTO();
@@ -99,7 +99,7 @@ public class CountryControllerTest extends AbstractTest {
   @Test
   @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:countries.sql")
   @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "classpath:truncate.sql")
-  public void updateCountry_ok() throws Exception {
+  public void updateCountryOk() throws Exception {
     String url = "/countries/1";
 
     CountryDTO dto = new CountryDTO();
@@ -127,7 +127,7 @@ public class CountryControllerTest extends AbstractTest {
   @Test
   @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:countries.sql")
   @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "classpath:truncate.sql")
-  public void updateCountry_bad() throws Exception {
+  public void updateCountryBad() throws Exception {
     String url = "/countries/1";
 
     CountryDTO dto = new CountryDTO();
@@ -149,7 +149,7 @@ public class CountryControllerTest extends AbstractTest {
   @Test
   @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:countries.sql")
   @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "classpath:truncate.sql")
-  public void deleteCountry_ok() throws Exception {
+  public void deleteCountryOk() throws Exception {
     String url = "/countries/1";
 
     MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.delete(url)).andReturn();

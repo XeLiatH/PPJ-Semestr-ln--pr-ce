@@ -7,11 +7,21 @@ import cz.tul.beran.weather.entity.mysql.Country;
 import cz.tul.beran.weather.repository.mysql.CountryRepository;
 import cz.tul.beran.weather.service.mongo.TemperatureService;
 import cz.tul.beran.weather.service.provider.WeatherProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
+
 @Component
 public class UpdateTemperatures {
+
+  private static final Logger logger = LoggerFactory.getLogger(UpdateTemperatures.class);
+
+  @Value("${read-only:false}")
+  private Boolean readOnly;
 
   private final WeatherProvider weatherProvider;
   private final CountryRepository countryRepository;
@@ -29,6 +39,11 @@ public class UpdateTemperatures {
   @Scheduled(cron = "${cz.tul.beran.weather.interval}")
   public void fetch() {
 
+    if (readOnly) {
+      logger.info("Application is in read-only state. Not attempting to fetch any new data.");
+      return;
+    }
+
     for (Country country : countryRepository.findAll()) {
       for (City city : country.getCities()) {
 
@@ -40,9 +55,11 @@ public class UpdateTemperatures {
 
         Temperature tempObj = new Temperature();
         tempObj.setCountryCode(countryCode);
-        tempObj.setCityName(countryCode);
+        tempObj.setCityName(cityName);
+        tempObj.setTemperature(temperature);
+        tempObj.setCreatedAt(new Date());
 
-        temperatureService.createTemperature(countryCode, cityName, temperature);
+        temperatureService.create(tempObj);
       }
     }
   }

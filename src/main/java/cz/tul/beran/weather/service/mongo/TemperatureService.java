@@ -2,8 +2,10 @@ package cz.tul.beran.weather.service.mongo;
 
 import com.mongodb.DBObject;
 import cz.tul.beran.weather.entity.mongo.Temperature;
+import cz.tul.beran.weather.exception.ReadOnlyException;
 import cz.tul.beran.weather.exception.TemperatureNotFoundException;
 import cz.tul.beran.weather.repository.mongo.TemperatureRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.GroupOperation;
@@ -19,6 +21,9 @@ import java.util.List;
 
 @Component
 public class TemperatureService {
+
+  @Value("${read-only:false}")
+  private Boolean readOnly;
 
   private final MongoTemplate mongoTemplate;
 
@@ -49,6 +54,10 @@ public class TemperatureService {
   }
 
   public Temperature create(Temperature temperature) {
+    if (readOnly) {
+      throw new ReadOnlyException();
+    }
+
     long id = sequenceService.getNextId();
     temperature.setId(id);
 
@@ -56,6 +65,10 @@ public class TemperatureService {
   }
 
   public Temperature update(Long id, Temperature newTemperature) {
+    if (readOnly) {
+      throw new ReadOnlyException();
+    }
+
     return temperatureRepository
         .findById(id)
         .map(
@@ -74,21 +87,11 @@ public class TemperatureService {
   }
 
   public void deleteById(Long id) {
+    if (readOnly) {
+      throw new ReadOnlyException();
+    }
+
     temperatureRepository.deleteById(id);
-  }
-
-  public void createTemperature(String countryCode, String cityName, Double temperature) {
-
-    Long nextId = sequenceService.getNextId();
-
-    Temperature tempObj = new Temperature();
-    tempObj.setId(nextId);
-    tempObj.setCountryCode(countryCode);
-    tempObj.setCityName(cityName);
-    tempObj.setTemperature(temperature);
-    tempObj.setCreatedAt(new Date());
-
-    temperatureRepository.save(tempObj);
   }
 
   public DBObject getAverageTemperatureByCityNameInLastNDays(String cityName, Integer daysAgo) {

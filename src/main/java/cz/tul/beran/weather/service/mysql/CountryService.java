@@ -3,13 +3,18 @@ package cz.tul.beran.weather.service.mysql;
 import cz.tul.beran.weather.dto.mysql.CountryDTO;
 import cz.tul.beran.weather.entity.mysql.Country;
 import cz.tul.beran.weather.exception.CountryNotFoundException;
+import cz.tul.beran.weather.exception.ReadOnlyException;
 import cz.tul.beran.weather.repository.mysql.CountryRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
 public class CountryService {
+
+  @Value("${read-only:false}")
+  private Boolean readOnly;
 
   private final CountryRepository countryRepository;
 
@@ -26,6 +31,10 @@ public class CountryService {
   }
 
   public Country create(CountryDTO countryDTO) {
+    if (readOnly) {
+      throw new ReadOnlyException();
+    }
+
     Country country = new Country();
     country.setCode(countryDTO.getCode());
     country.setName(countryDTO.getName());
@@ -34,6 +43,10 @@ public class CountryService {
   }
 
   public Country update(Long id, CountryDTO countryDTO) {
+    if (readOnly) {
+      throw new ReadOnlyException();
+    }
+
     return countryRepository
         .findById(id)
         .map(
@@ -53,6 +66,10 @@ public class CountryService {
   }
 
   public void deleteById(Long id) {
+    if (readOnly) {
+      throw new ReadOnlyException();
+    }
+
     countryRepository.deleteById(id);
   }
 }

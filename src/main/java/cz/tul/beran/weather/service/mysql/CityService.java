@@ -5,14 +5,19 @@ import cz.tul.beran.weather.entity.mysql.City;
 import cz.tul.beran.weather.entity.mysql.Country;
 import cz.tul.beran.weather.exception.CityNotFoundException;
 import cz.tul.beran.weather.exception.CountryNotFoundException;
+import cz.tul.beran.weather.exception.ReadOnlyException;
 import cz.tul.beran.weather.repository.mysql.CityRepository;
 import cz.tul.beran.weather.repository.mysql.CountryRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
 public class CityService {
+
+  @Value("${read-only:false}")
+  private Boolean readOnly;
 
   private final CityRepository cityRepository;
   private final CountryRepository countryRepository;
@@ -31,6 +36,9 @@ public class CityService {
   }
 
   public City create(CityDTO cityDTO) {
+    if (readOnly) {
+      throw new ReadOnlyException();
+    }
 
     City city = new City();
     city.setName(cityDTO.getName());
@@ -40,6 +48,10 @@ public class CityService {
   }
 
   public City update(Long id, CityDTO cityDTO) {
+    if (readOnly) {
+      throw new ReadOnlyException();
+    }
+
     Country country = getCountry(cityDTO.getCountryId());
 
     return cityRepository
@@ -62,6 +74,10 @@ public class CityService {
   }
 
   public void deleteById(Long id) {
+    if (readOnly) {
+      throw new ReadOnlyException();
+    }
+
     cityRepository.deleteById(id);
   }
 

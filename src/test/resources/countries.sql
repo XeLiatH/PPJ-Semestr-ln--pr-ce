@@ -1,3 +1,2 @@
 INSERT INTO country VALUES (1, 'CZ', 'Czech Republic');
-
-INSERT INTO city  VALUES (1, 'Liberec', 1);
+INSERT INTO country VALUES (2, 'PL', 'Poland');

@@ -5,11 +5,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cz.tul.beran.weather.App;
-import cz.tul.beran.weather.repository.mysql.CountryRepository;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -29,11 +27,8 @@ public class AbstractTest {
 
   @Autowired WebApplicationContext webApplicationContext;
 
-  @MockBean CountryRepository countryRepository;
-
   protected void setUp() {
     mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-    countryRepository.deleteAll();
   }
 
   protected String mapToJson(Object obj) throws JsonProcessingException {

@@ -1,0 +1,2 @@
+TRUNCATE TABLE city;
+TRUNCATE TABLE country;

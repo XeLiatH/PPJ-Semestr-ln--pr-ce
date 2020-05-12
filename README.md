@@ -24,7 +24,7 @@ All temperatures are in [kelvins](https://en.wikipedia.org/wiki/Kelvin).
 
 ## Date format
 
-All dates are dealt with this format: **yyyy-MM-dd HH:mm:ss**.
+All dates are dealt with in this format: **yyyy-MM-dd HH:mm:ss**.
 
 > For example: 2020-04-20 12:13:52
 

@@ -3,6 +3,10 @@
 This file contains general how to's regarding this simple app.
 It will be focused on the local configuration and general formats.
 
+## Java version
+
+This project uses **java version 8**.
+
 ## Default database settings
 
 ### MySQL

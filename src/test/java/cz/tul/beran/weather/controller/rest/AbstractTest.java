@@ -21,7 +21,7 @@ import java.io.IOException;
 @SpringBootTest(classes = App.class)
 @WebAppConfiguration
 @ActiveProfiles("test")
-public class AbstractTest {
+public abstract class AbstractTest {
 
   protected MockMvc mvc;
 

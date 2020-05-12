@@ -47,12 +47,12 @@ public class CsvTemperatureImporter implements TemperatureImporter {
       for (CsvWeatherRow row : rows) {
         if (null == countryRepository.findByCodeEquals(row.getCountryCode())) {
           logger.debug(
-              String.format("Country not found [%s], skipping row %d", row.getCountryCode(), i));
+              String.format("Country [%s] not found, skipping row %d", row.getCountryCode(), i));
           continue;
         }
 
         if (null == cityRepository.findByNameEquals(row.getCityName())) {
-          logger.debug(String.format("City not found [%s], skipping row %d", row.getCityName(), i));
+          logger.debug(String.format("City [%s] not found, skipping row %d", row.getCityName(), i));
           continue;
         }
 
